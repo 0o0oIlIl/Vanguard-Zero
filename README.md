@@ -1,2 +1,2 @@
-# Vanguard-Zero
-VANGUARD ZERO-MOBILE FPS
+# VANGUARD ZERO
+Mobile FPS browser game.
