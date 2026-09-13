@@ -5,1301 +5,620 @@
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#05080d">
-
-<title>VANGUARD ZERO</title>
+<meta name="theme-color" content="#071014">
+<title>Bullstrike Ops</title>
 
 <style>
 :root{
- --safeT:max(12px,env(safe-area-inset-top));
- --safeB:max(12px,env(safe-area-inset-bottom));
- --safeL:max(12px,env(safe-area-inset-left));
- --safeR:max(12px,env(safe-area-inset-right));
- --cyan:#5de4ff;
+ --cyan:#27e2f2;
+ --cyan2:#009eb8;
+ --orange:#ffb52b;
+ --dark:#071014;
+ --panel:#0c171ddd;
+ --line:#ffffff2b;
 }
 *{box-sizing:border-box;-webkit-user-select:none;user-select:none}
 html,body{
  margin:0;width:100%;height:100%;overflow:hidden;
- background:#05080d;color:white;
- font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
- touch-action:none;overscroll-behavior:none
+ background:#071014;color:white;
+ font-family:Arial,Helvetica,sans-serif;
+ touch-action:none;
 }
-canvas{position:fixed;inset:0;width:100%;height:100%;touch-action:none}
+button{font:inherit;color:inherit}
+
+/* BACKGROUND */
+#background{
+ position:fixed;inset:0;
+ background:
+ linear-gradient(90deg,#031016dd,#0c222488),
+ radial-gradient(circle at 60% 35%,#29b7bc44,transparent 32%),
+ linear-gradient(#203438,#071014);
+}
+#background:after{
+ content:"";position:absolute;inset:0;
+ background:
+ repeating-linear-gradient(90deg,transparent 0 79px,#ffffff08 80px),
+ repeating-linear-gradient(0deg,transparent 0 79px,#ffffff05 80px);
+ opacity:.4;
+}
+
+/* TOP BAR */
+#top{
+ position:fixed;z-index:20;
+ top:max(8px,env(safe-area-inset-top));
+ left:max(9px,env(safe-area-inset-left));
+ right:max(9px,env(safe-area-inset-right));
+ height:48px;
+ display:flex;align-items:center;justify-content:space-between;
+ pointer-events:none;
+}
+.topLeft,.topRight{display:flex;align-items:center;gap:9px;pointer-events:auto}
+
+.avatar{
+ width:41px;height:41px;
+ border:2px solid var(--cyan);
+ background:linear-gradient(135deg,#182930,#39c9d4);
+ display:flex;align-items:center;justify-content:center;
+ font-weight:1000;font-size:21px;
+ clip-path:polygon(0 0,100% 0,100% 83%,82% 100%,0 100%);
+}
+.name{font-weight:900;font-size:13px}
+.currency{
+ padding:6px 9px;
+ background:#071015aa;
+ border:1px solid #ffffff18;
+ font-size:12px;
+}
+.iconBtn{
+ width:39px;height:39px;border:0;
+ background:#071015b5;
+ border:1px solid var(--line);
+ font-size:17px;
+}
+
+/* HOME */
+.screen{
+ position:fixed;
+ left:0;right:0;
+ top:62px;
+ bottom:58px;
+ z-index:10;
+}
 .hidden{display:none!important}
 
-.screen{
- position:fixed;inset:0;z-index:100;
- display:flex;align-items:center;justify-content:center;
+#homeCharacter{
+ position:absolute;
+ left:31%;top:7%;
+ width:34%;height:82%;
+ filter:drop-shadow(0 22px 18px #0008);
+}
+.head{
+ position:absolute;width:24%;height:17%;
+ left:39%;top:3%;background:#20292b;
+ border-radius:50% 50% 42% 42%;
+ border:2px solid #46565a;
+}
+.mask{
+ position:absolute;left:34%;top:13%;
+ width:34%;height:16%;
+ background:#11191c;
+ clip-path:polygon(15% 0,86% 0,100% 70%,75% 100%,24% 100%,0 70%);
+}
+.body{
+ position:absolute;left:20%;top:25%;
+ width:61%;height:48%;
  background:
- radial-gradient(circle at 80% 20%,#15435855,transparent 35%),
- linear-gradient(130deg,#05080df4,#0b1922eb);
- backdrop-filter:blur(13px)
+ linear-gradient(90deg,#262d2c,#4b5148 50%,#252a29);
+ clip-path:polygon(20% 0,80% 0,100% 24%,83% 100%,16% 100%,0 25%);
+ border:2px solid #505c58;
 }
-.card{
- width:min(650px,92vw);max-height:90vh;overflow:auto;
- padding:25px;border:1px solid #ffffff24;border-radius:24px;
- background:#071018de;box-shadow:0 30px 100px #000b
+.vest{
+ position:absolute;left:27%;top:30%;
+ width:47%;height:31%;
+ background:repeating-linear-gradient(0deg,#252b29 0 12px,#3f4640 13px 17px);
+ border:2px solid #131818;
 }
-.logo{font-size:clamp(42px,9vw,77px);font-weight:950;letter-spacing:-4px;line-height:.8}
-.logo span{display:block;color:var(--cyan);font-size:.42em;letter-spacing:8px;margin-top:15px}
-.subtitle{color:#a8bcc8;line-height:1.5}
+.arm{
+ position:absolute;top:31%;width:18%;height:44%;
+ background:#353d3a;border:2px solid #1b2221;
+}
+.arm.left{left:8%;transform:rotate(9deg)}
+.arm.right{right:8%;transform:rotate(-12deg)}
+.leg{
+ position:absolute;top:69%;width:23%;height:31%;
+ background:#252c2b;
+}
+.leg.left{left:25%}.leg.right{right:25%}
+.rifle{
+ position:absolute;
+ width:70%;height:8%;
+ left:19%;top:43%;
+ transform:rotate(-14deg);
+ background:#141b1e;
+ border:2px solid #59666b;
+ box-shadow:20px 5px 0 -2px #151b1d;
+}
+.rifle:after{
+ content:"";position:absolute;
+ right:-28%;top:27%;
+ width:35%;height:28%;
+ background:#111719;
+}
 
-button,select,input{font:inherit}
-.big{
- display:block;width:100%;padding:15px;margin:8px 0;
- border:0;border-radius:13px;font-weight:900;
- background:#eaf8fb;color:#08131a
+/* SIDE NAV */
+#leftNav{
+ position:absolute;left:max(13px,env(safe-area-inset-left));
+ top:13%;width:145px;
 }
-.dark{background:#15232d;color:white;border:1px solid #ffffff20}
+.nav{
+ width:100%;height:52px;
+ display:flex;align-items:center;
+ gap:9px;border:0;border-left:3px solid transparent;
+ background:linear-gradient(90deg,#071015cc,transparent);
+ text-align:left;font-size:11px;font-weight:900;
+ padding:0 10px;
+}
+.nav.active{border-color:var(--cyan);color:var(--cyan)}
+.navIcon{font-size:19px;width:25px;text-align:center}
 
-#modes{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:20px 0}
+/* PLAY CARD */
+#playCard{
+ position:absolute;
+ right:max(17px,env(safe-area-inset-right));
+ bottom:8%;
+ width:min(250px,34vw);
+}
+.rank{
+ background:#09151bcc;
+ border:1px solid var(--line);
+ padding:10px;
+ margin-bottom:7px;
+}
+.rankTitle{
+ color:#a6b4b8;font-size:9px;
+ text-transform:uppercase;
+}
+.rankName{font-size:17px;font-weight:1000;margin-top:3px}
+.progress{
+ margin-top:7px;height:5px;background:#ffffff18;
+}
+.progress div{height:100%;width:36%;background:var(--orange)}
+.playButton{
+ width:100%;height:71px;
+ border:1px solid #8ff7ff;
+ background:
+ linear-gradient(135deg,#19d5e9,#58eff7);
+ color:#062026;font-weight:1000;font-size:24px;
+ box-shadow:0 6px 25px #00d9f244;
+}
+.modeText{
+ background:#061015d9;
+ padding:8px;font-size:10px;
+}
+
+/* MODE PANEL */
+#modePanel{
+ position:absolute;
+ inset:7% 8%;
+ background:#071117e8;
+ border:1px solid var(--line);
+ padding:22px;
+ overflow:auto;
+}
+.title{
+ font-size:30px;font-weight:1000;
+ letter-spacing:-1px;margin-bottom:4px;
+}
+.sub{font-size:11px;color:#8da2aa;margin-bottom:18px}
+.modeGrid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px;
+}
 .mode{
- min-height:95px;padding:13px;text-align:left;color:#fff;
- border:1px solid #ffffff20;border-radius:15px;
- background:#ffffff08
+ padding:17px;min-height:110px;
+ border:1px solid #ffffff25;
+ background:
+ linear-gradient(135deg,#102630,#0a1419);
+ text-align:left;
 }
-.mode b{display:block;font-size:18px;margin-bottom:4px}
-.mode small{color:#9fb0bb}
-.mode.selected{border-color:var(--cyan);background:#5de4ff18}
+.mode.selected{
+ border-color:var(--cyan);
+ box-shadow:inset 0 0 30px #16dbed22;
+}
+.mode b{font-size:18px;display:block}
+.mode small{display:block;color:#98aab0;margin-top:8px;line-height:1.4}
 
-label{display:block;margin-top:13px;color:#c7d5dd;font-size:13px}
-select{width:100%;margin-top:5px;padding:12px;background:#111e27;color:#fff;border:1px solid #ffffff25;border-radius:10px}
-input[type=range]{width:100%}
+/* PROFILE */
+#profile{
+ padding:5% 8%;
+}
+.profileCard{
+ position:absolute;left:7%;top:11%;
+ width:180px;height:235px;
+ background:
+ linear-gradient(145deg,#183744,#0a1820);
+ border:2px solid #5ce8ef;
+ clip-path:polygon(0 0,88% 0,100% 9%,100% 89%,86% 100%,0 100%);
+ padding:15px;
+}
+.profileLogo{
+ margin:25px auto 13px;
+ width:90px;height:105px;
+ display:flex;align-items:center;justify-content:center;
+ font-size:53px;font-weight:1000;
+ border:4px solid white;
+ background:#183b4b;
+ transform:skewY(-5deg);
+}
+.idText{font-size:10px;color:#7cebf2}
+.statsRow{
+ position:absolute;left:33%;right:7%;bottom:13%;
+ display:grid;grid-template-columns:repeat(5,1fr);
+ border-top:1px solid #ffffff25;
+ border-bottom:1px solid #ffffff25;
+}
+.stat{padding:12px;text-align:center;border-right:1px solid #ffffff18}
+.stat b{font-size:18px}
+.stat span{display:block;color:#93a6ad;font-size:8px;margin-top:5px}
 
-/* HUD */
-#hud{position:fixed;inset:0;z-index:20;pointer-events:none}
-#score{
- position:absolute;top:var(--safeT);left:50%;transform:translateX(-50%);
- padding:7px 13px;background:#03070ba8;border:1px solid #ffffff1d;
- border-radius:9px;font-weight:800;font-size:13px
+/* SETTINGS */
+#settingsPage{
+ padding:4% 8%;
+ overflow:auto;
 }
-#fps{
- position:absolute;left:var(--safeL);top:var(--safeT);
- color:#bdefff;background:#02080bad;padding:6px 9px;border-radius:8px;font-size:11px
+.settingsBox{
+ background:#071117e9;
+ border:1px solid var(--line);
+ max-width:850px;margin:auto;
+ padding:19px;
 }
-#killfeed{
- position:absolute;right:var(--safeR);top:65px;text-align:right;
- font-size:11px;text-shadow:0 2px 4px #000
+.settingRow{
+ display:grid;grid-template-columns:180px 1fr;
+ border-bottom:1px solid #ffffff18;
+ padding:13px 4px;
+ align-items:center;
 }
-.feed{margin:3px 0}
-#stats{
- position:absolute;left:var(--safeL);bottom:calc(var(--safeB) + 170px);
- font-size:12px;text-shadow:0 2px 5px #000
+.settingRow label{
+ color:#aab9bd;
+ font-size:11px;
+ font-weight:bold;
 }
-.statbar{width:150px;height:7px;background:#0009;border-radius:8px;overflow:hidden;margin:4px 0}
-#hp{height:100%;width:100%;background:#ef5b55}
-#armor{height:100%;width:50%;background:#4dcbf1}
-
-#weapon{
- position:absolute;right:var(--safeR);bottom:calc(var(--safeB) + 165px);
- text-align:right;text-shadow:0 2px 7px #000
+select,input[type=range]{
+ width:100%;
 }
-#weaponName{font-size:12px;color:#b9cad4}
-#ammo{font-weight:950;font-size:30px}
-
-#crosshair{position:absolute;left:50%;top:50%;width:28px;height:28px;transform:translate(-50%,-50%)}
-.line{position:absolute;background:#fff;box-shadow:0 0 3px #000}
-.l1{left:13px;top:0;width:2px;height:8px}.l2{left:13px;bottom:0;width:2px;height:8px}
-.l3{top:13px;left:0;height:2px;width:8px}.l4{top:13px;right:0;height:2px;width:8px}
-#hitmarker{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%) rotate(45deg);font-size:32px;opacity:0}
-#damage{position:absolute;inset:0;background:#d514142d;opacity:0}
-
-#pauseBtn{
- pointer-events:auto;position:absolute;right:var(--safeR);top:var(--safeT);
- width:43px;height:43px;border-radius:10px;
- border:1px solid #ffffff3d;background:#071018b9;color:#fff;font-size:19px
+select{
+ background:#17cfdf;
+ color:#062126;
+ border:0;padding:10px;
+ font-weight:bold;
 }
 
-/* TOUCH */
-#look{pointer-events:auto;position:absolute;left:40%;right:0;top:55px;bottom:80px}
-#joyZone{pointer-events:auto;position:absolute;left:var(--safeL);bottom:var(--safeB);width:170px;height:170px}
-#joyBase{position:absolute;left:25px;top:25px;width:115px;height:115px;border:2px solid #ffffff2e;background:#ffffff0d;border-radius:50%}
-#joy{position:absolute;left:50%;top:50%;width:55px;height:55px;transform:translate(-50%,-50%);border-radius:50%;background:#ffffff3d;border:2px solid #ffffff6b}
-
-.control{
- pointer-events:auto;position:absolute;border-radius:50%;
- width:64px;height:64px;border:1px solid #ffffff4b;
- background:#071018b9;color:#fff;font-weight:900;font-size:9px;
- backdrop-filter:blur(5px)
+/* BOTTOM NAV */
+#bottom{
+ position:fixed;z-index:25;
+ left:0;right:0;bottom:0;
+ height:58px;
+ padding-bottom:env(safe-area-inset-bottom);
+ background:#061015e8;
+ border-top:1px solid #ffffff1b;
+ display:flex;align-items:center;
+ gap:8px;padding-left:max(11px,env(safe-area-inset-left));
 }
-#fire{right:var(--safeR);bottom:var(--safeB);width:75px;height:75px;background:#e8484855}
-#ads{right:calc(var(--safeR) + 84px);bottom:var(--safeB)}
-#reload{right:var(--safeR);bottom:calc(var(--safeB) + 84px)}
-#jump{right:calc(var(--safeR) + 79px);bottom:calc(var(--safeB) + 76px)}
-#swap{right:calc(var(--safeR) + 150px);bottom:calc(var(--safeB) + 8px);width:55px;height:55px}
-
-#zone{
- position:absolute;left:50%;top:75px;transform:translateX(-50%);
- color:#71ddff;font-weight:800;font-size:12px
+.bottomBtn{
+ border:0;background:transparent;
+ color:#a8b6ba;font-size:10px;
+ padding:10px;
 }
-#centerMessage{
- position:absolute;left:50%;top:35%;transform:translateX(-50%);
- font-size:24px;font-weight:950;text-shadow:0 3px 8px #000;
- opacity:0;text-align:center
+.bottomBtn.on{color:white;border-bottom:2px solid var(--cyan)}
+
+@media(max-width:700px){
+ #leftNav{width:106px}
+ .nav{height:45px;font-size:9px;padding:4px}
+ #homeCharacter{left:29%;width:39%}
+ #playCard{width:30vw}
+ .playButton{font-size:18px;height:58px}
+ .profileCard{width:140px;height:190px}
+ .profileLogo{width:70px;height:80px;font-size:40px;margin-top:15px}
+ .statsRow{left:30%}
+ .settingRow{grid-template-columns:120px 1fr}
 }
 </style>
 </head>
 
 <body>
 
-<div id="menu" class="screen">
-<div class="card">
- <div class="logo">VANGUARD<span>ZERO</span></div>
- <p class="subtitle">High-speed mobile combat. Original arenas, AI combatants and four game modes designed for Safari.</p>
+<div id="background"></div>
 
- <div id="modes">
-  <button class="mode selected" data-mode="ffa"><b>FREE FOR ALL</b><small>First to 20 eliminations.</small></button>
-  <button class="mode" data-mode="gun"><b>GUN GAME</b><small>Advance weapons every elimination.</small></button>
-  <button class="mode" data-mode="br"><b>BATTLE ROYALE</b><small>One life. Survive the closing zone.</small></button>
-  <button class="mode" data-mode="reload"><b>RELOAD</b><small>Limited-ammo elimination rounds.</small></button>
+<header id="top">
+ <div class="topLeft">
+  <div class="avatar">B</div>
+  <div>
+   <div class="name" id="callSign">Bull-017</div>
+   <div style="font-size:8px;color:#82969e">LEVEL 1</div>
+  </div>
  </div>
 
- <button id="deploy" class="big">DEPLOY</button>
- <button id="menuSettings" class="big dark">SETTINGS</button>
- <p style="font-size:11px;color:#78909d">Combatants marked AI are computer-controlled. No online multiplayer connection is implied.</p>
-</div>
-</div>
+ <div class="topRight">
+  <div class="currency">◈ 0</div>
+  <div class="currency" style="color:#ffd342">◆ 750</div>
+  <button class="iconBtn" data-page="profile">♟</button>
+  <button class="iconBtn" data-page="settingsPage">⚙</button>
+ </div>
+</header>
 
-<div id="settings" class="screen hidden">
-<div class="card">
- <h2>SETTINGS</h2>
-
- <label>Graphics</label>
- <select id="quality">
-  <option value="performance">Performance</option>
-  <option value="high" selected>High</option>
-  <option value="ultra">Ultra</option>
- </select>
-
- <label>Look sensitivity</label>
- <input id="sens" type="range" min="2" max="12" value="6">
-
- <label>Field of View</label>
- <input id="fov" type="range" min="65" max="95" value="78">
-
- <label>AI Combatants</label>
- <input id="botCount" type="range" min="6" max="24" value="14">
-
- <button id="closeSettings" class="big">APPLY</button>
-</div>
-</div>
-
-<div id="pause" class="screen hidden">
-<div class="card">
- <h2>PAUSED</h2>
- <button id="resume" class="big">RESUME</button>
- <button id="pauseSettings" class="big dark">SETTINGS</button>
- <button id="quit" class="big dark">LEAVE MATCH</button>
-</div>
-</div>
-
-<div id="hud" class="hidden">
- <div id="damage"></div>
- <div id="fps">60 FPS</div>
- <div id="score"></div>
- <div id="zone"></div>
- <div id="killfeed"></div>
-
- <div id="stats">
-  <b>HEALTH</b>
-  <div class="statbar"><div id="hp"></div></div>
-  <b>ARMOR</b>
-  <div class="statbar"><div id="armor"></div></div>
+<!-- HQ -->
+<section id="home" class="screen">
+ <div id="leftNav">
+  <button class="nav"><span class="navIcon">▣</span>MISSIONS</button>
+  <button class="nav active"><span class="navIcon">⌁</span>MATCH</button>
+  <button class="nav"><span class="navIcon">◇</span>OPERATORS</button>
+  <button class="nav"><span class="navIcon">▤</span>LOADOUT</button>
  </div>
 
- <div id="weapon">
-  <div id="weaponName"></div>
-  <div id="ammo"></div>
+ <div id="homeCharacter">
+  <div class="leg left"></div>
+  <div class="leg right"></div>
+  <div class="body"></div>
+  <div class="vest"></div>
+  <div class="arm left"></div>
+  <div class="arm right"></div>
+  <div class="head"></div>
+  <div class="mask"></div>
+  <div class="rifle"></div>
  </div>
 
- <div id="crosshair">
-  <i class="line l1"></i><i class="line l2"></i>
-  <i class="line l3"></i><i class="line l4"></i>
+ <div id="playCard">
+  <div class="rank">
+   <div class="rankTitle">Rank · Recruit</div>
+   <div class="rankName">IRON WOLF</div>
+   <div class="progress"><div></div></div>
+  </div>
+  <div class="modeText">SELECTED: <b id="selectedMode">GUN GAME</b></div>
+  <button class="playButton" data-page="modePanel">PLAY</button>
  </div>
- <div id="hitmarker">×</div>
- <div id="centerMessage"></div>
+</section>
 
- <button id="pauseBtn">☰</button>
- <div id="look"></div>
- <div id="joyZone"><div id="joyBase"><div id="joy"></div></div></div>
+<!-- MODES -->
+<section id="modePanel" class="screen hidden">
+ <div class="title">SELECT OPERATION</div>
+ <div class="sub">Choose how you want to deploy.</div>
 
- <button class="control" id="fire">FIRE</button>
- <button class="control" id="ads">ADS</button>
- <button class="control" id="reload">RELOAD</button>
- <button class="control" id="jump">JUMP</button>
- <button class="control" id="swap">SWAP</button>
-</div>
+ <div class="modeGrid">
+  <button class="mode selected" data-mode="GUN GAME">
+   <b>GUN GAME</b>
+   <small>Each elimination advances your weapon. Master the full arsenal.</small>
+  </button>
+  <button class="mode" data-mode="FREE FOR ALL">
+   <b>FREE FOR ALL</b>
+   <small>No teams. Every combatant is a target.</small>
+  </button>
+  <button class="mode" data-mode="BATTLE ROYALE">
+   <b>BATTLE ROYALE</b>
+   <small>Large deployment with a closing combat zone. Last survivor wins.</small>
+  </button>
+  <button class="mode" data-mode="RELOAD">
+   <b>RELOAD</b>
+   <small>Round-based elimination with limited ammunition and tactical reloads.</small>
+  </button>
+ </div>
 
-<script type="importmap">
-{"imports":{"three":"https://cdn.jsdelivr.net/npm/three@0.180.0/build/three.module.js"}}
-</script>
+ <button id="deploy" style="float:right;margin-top:18px;width:240px;height:58px;background:var(--cyan);border:0;color:#062126;font-weight:1000;font-size:20px">
+  DEPLOY
+ </button>
+</section>
 
-<script type="module">
-import * as THREE from "three";
+<!-- PROFILE -->
+<section id="profile" class="screen hidden">
+ <div class="profileCard">
+  <div style="font-size:10px;color:#9db0b6">BULLSTRIKE OPS</div>
+  <div class="profileLogo">B</div>
+  <b id="profileName">Bull-017</b>
+  <div class="idText" id="playerID">ID: generating...</div>
+ </div>
+
+ <div style="position:absolute;left:33%;top:20%">
+  <div class="title">FIELD PROFILE</div>
+  <div class="sub">LOCAL OPERATIVE RECORD</div>
+  <h2 id="bigName">Bull-017</h2>
+  <span style="color:var(--cyan);font-size:11px">RECRUIT // LEVEL 1</span>
+ </div>
+
+ <div class="statsRow">
+  <div class="stat"><b id="matches">0</b><span>MATCHES</span></div>
+  <div class="stat"><b id="wins">0</b><span>WINS</span></div>
+  <div class="stat"><b id="rate">0%</b><span>WIN RATE</span></div>
+  <div class="stat"><b id="kills">0</b><span>ELIMINATIONS</span></div>
+  <div class="stat"><b id="accuracy">0%</b><span>ACCURACY</span></div>
+ </div>
+</section>
+
+<!-- SETTINGS -->
+<section id="settingsPage" class="screen hidden">
+ <div class="settingsBox">
+  <div class="title">SETTINGS</div>
+  <div class="sub">BULLSTRIKE OPS // DEVICE CONFIGURATION</div>
+
+  <div class="settingRow">
+   <label>GRAPHICS QUALITY</label>
+   <select id="graphics">
+    <option>PERFORMANCE</option>
+    <option selected>HIGH</option>
+    <option>ULTRA</option>
+   </select>
+  </div>
+
+  <div class="settingRow">
+   <label>FRAME RATE</label>
+   <select id="frame">
+    <option selected>UNCAPPED</option>
+    <option>60 FPS</option>
+    <option>30 FPS</option>
+   </select>
+  </div>
+
+  <div class="settingRow">
+   <label>AIM SENSITIVITY</label>
+   <input id="sensitivity" type="range" min="1" max="100" value="48">
+  </div>
+
+  <div class="settingRow">
+   <label>FIELD OF VIEW</label>
+   <input id="fov" type="range" min="65" max="100" value="82">
+  </div>
+
+  <div class="settingRow">
+   <label>BOT COUNT</label>
+   <input id="bots" type="range" min="6" max="30" value="18">
+  </div>
+
+  <div class="settingRow">
+   <label>PLAYER ID</label>
+   <div id="settingsID" style="font-family:monospace;color:var(--cyan);font-size:11px"></div>
+  </div>
+
+  <div class="settingRow">
+   <label>STORAGE</label>
+   <button id="reset" style="width:200px;background:#7b2424;border:0;padding:10px">RESET LOCAL PROFILE</button>
+  </div>
+ </div>
+</section>
+
+<nav id="bottom">
+ <button class="bottomBtn on" data-page="home">⌂ HOME</button>
+ <button class="bottomBtn" data-page="profile">◈ PROFILE</button>
+ <button class="bottomBtn" data-page="modePanel">⌖ OPERATIONS</button>
+ <button class="bottomBtn" data-page="settingsPage">⚙ SETTINGS</button>
+</nav>
+
+<script>
+/*
+  BULLSTRIKE OPS
+  Mobile tactical FPS UI shell.
+  All artwork here is original CSS-generated placeholder artwork.
+*/
 
 const $=s=>document.querySelector(s);
+const pages=["home","modePanel","profile","settingsPage"];
 
-/* -------------------- THREE -------------------- */
+function page(id){
+ pages.forEach(p=>$("#"+p).classList.toggle("hidden",p!==id));
 
-const scene=new THREE.Scene();
-scene.background=new THREE.Color(0x8098a3);
-scene.fog=new THREE.Fog(0x8098a3,35,125);
-
-const camera=new THREE.PerspectiveCamera(78,innerWidth/innerHeight,.05,180);
-
-const renderer=new THREE.WebGLRenderer({
- antialias:false,
- powerPreference:"high-performance"
-});
-
-renderer.setSize(innerWidth,innerHeight);
-renderer.setPixelRatio(Math.min(devicePixelRatio,1.3));
-renderer.outputColorSpace=THREE.SRGBColorSpace;
-renderer.toneMapping=THREE.ACESFilmicToneMapping;
-renderer.toneMappingExposure=1.05;
-renderer.shadowMap.enabled=true;
-renderer.shadowMap.type=THREE.PCFSoftShadowMap;
-
-document.body.prepend(renderer.domElement);
-
-const hemi=new THREE.HemisphereLight(0xcdeaff,0x293026,1.5);
-scene.add(hemi);
-
-const sun=new THREE.DirectionalLight(0xffe7bd,3.4);
-sun.position.set(-45,70,35);
-sun.castShadow=true;
-sun.shadow.mapSize.set(1024,1024);
-sun.shadow.camera.left=-60;
-sun.shadow.camera.right=60;
-sun.shadow.camera.top=60;
-sun.shadow.camera.bottom=-60;
-sun.shadow.camera.far=160;
-scene.add(sun);
-
-/* -------------------- ARENA -------------------- */
-
-const world=new THREE.Group();
-scene.add(world);
-
-const concrete=new THREE.MeshStandardMaterial({
- color:0x636b6c,roughness:.83
-});
-const darkMetal=new THREE.MeshStandardMaterial({
- color:0x20292d,roughness:.5,metalness:.45
-});
-const grass=new THREE.MeshStandardMaterial({
- color:0x526c43,roughness:.95
-});
-const accent=new THREE.MeshStandardMaterial({
- color:0x163742,roughness:.6,metalness:.2
-});
-
-function box(x,y,z,w,h,d,mat=concrete){
- const m=new THREE.Mesh(
-  new THREE.BoxGeometry(w,h,d),mat
- );
- m.position.set(x,y,z);
- m.castShadow=true;
- m.receiveShadow=true;
- world.add(m);
- return m;
-}
-
-box(0,-1,0,120,2,120,grass);
-
-/* central combat complex */
-box(0,2,-12,25,4,4);
-box(0,2,12,25,4,4);
-box(-12,2,0,4,4,20);
-box(12,2,0,4,4,20);
-
-box(0,1.25,0,7,2.5,7,accent);
-
-/* cover */
-[
- [-24,0,-20],[24,0,20],[-23,0,18],[22,0,-18],
- [-7,0,-28],[7,0,29],[-31,0,2],[31,0,-3],
- [-15,0,26],[17,0,-26]
-].forEach(([x,y,z],i)=>{
- box(x,1,z,i%2?6:4,2,i%2?2:5,darkMetal);
-});
-
-/* perimeter buildings */
-box(-43,5,-20,12,10,24);
-box(43,4,19,14,8,22);
-box(-35,3,34,22,6,10);
-box(34,4,-35,20,8,10);
-
-const obstacles=world.children;
-
-/* -------------------- PLAYER -------------------- */
-
-const player={
- pos:new THREE.Vector3(0,1.7,30),
- yaw:0,
- pitch:0,
- velocity:new THREE.Vector3(),
- health:100,
- armor:50,
- kills:0,
- deaths:0,
- grounded:true,
- alive:true
-};
-
-camera.position.copy(player.pos);
-
-/* -------------------- WEAPONS -------------------- */
-
-const weapons=[
- {
-  name:"VX-9 CARBINE",
-  damage:24,
-  head:1.65,
-  mag:30,
-  reserve:120,
-  rate:.095,
-  spread:.009,
-  recoil:.017,
-  reload:1.65,
-  range:95
- },
- {
-  name:"R-12 SMG",
-  damage:17,
-  head:1.45,
-  mag:36,
-  reserve:144,
-  rate:.065,
-  spread:.017,
-  recoil:.012,
-  reload:1.4,
-  range:60
- },
- {
-  name:"M7 MARKSMAN",
-  damage:52,
-  head:1.8,
-  mag:12,
-  reserve:48,
-  rate:.3,
-  spread:.004,
-  recoil:.035,
-  reload:1.9,
-  range:130
- },
- {
-  name:"K-4 SIDEARM",
-  damage:31,
-  head:1.75,
-  mag:15,
-  reserve:60,
-  rate:.19,
-  spread:.012,
-  recoil:.02,
-  reload:1.25,
-  range:70
- }
-];
-
-let weaponIndex=0;
-let ammo=weapons[0].mag;
-let reserve=weapons[0].reserve;
-let lastShot=0;
-let reloading=false;
-let ads=false;
-
-function equip(i){
- weaponIndex=(i+weapons.length)%weapons.length;
- ammo=weapons[weaponIndex].mag;
- reserve=weapons[weaponIndex].reserve;
- reloading=false;
- updateWeapon();
-}
-
-function updateWeapon(){
- const w=weapons[weaponIndex];
- $("#weaponName").textContent=w.name+(reloading?" · RELOADING":"");
- $("#ammo").textContent=`${ammo} / ${reserve}`;
-}
-
-/* -------------------- WEAPON MODEL -------------------- */
-
-const gun=new THREE.Group();
-camera.add(gun);
-scene.add(camera);
-
-const gunMat=new THREE.MeshStandardMaterial({
- color:0x1d2428,metalness:.6,roughness:.35
-});
-const gunAccent=new THREE.MeshStandardMaterial({
- color:0x59646a,metalness:.72,roughness:.28
-});
-
-const receiver=new THREE.Mesh(
- new THREE.BoxGeometry(.12,.13,.65),gunMat
-);
-receiver.position.set(.18,-.18,-.52);
-gun.add(receiver);
-
-const barrel=new THREE.Mesh(
- new THREE.BoxGeometry(.055,.055,.43),gunAccent
-);
-barrel.position.set(.18,-.15,-1);
-gun.add(barrel);
-
-/* -------------------- BOTS -------------------- */
-
-const bots=[];
-const botBodyGeo=new THREE.CapsuleGeometry(.32,.85,3,7);
-const botHeadGeo=new THREE.SphereGeometry(.25,10,8);
-
-const botColors=[
- 0x314754,0x594534,0x403d54,0x2d503f,
- 0x5a3537,0x4d5053
-];
-
-function spawnPoint(){
- const a=Math.random()*Math.PI*2;
- const r=22+Math.random()*30;
- return new THREE.Vector3(
-  Math.cos(a)*r,
-  .75,
-  Math.sin(a)*r
- );
-}
-
-function makeBot(i){
- const root=new THREE.Group();
-
- const mat=new THREE.MeshStandardMaterial({
-  color:botColors[i%botColors.length],
-  roughness:.68,
-  metalness:.12
+ document.querySelectorAll(".bottomBtn").forEach(b=>{
+  b.classList.toggle("on",b.dataset.page===id);
  });
+}
 
- const body=new THREE.Mesh(botBodyGeo,mat);
- body.position.y=.83;
- body.castShadow=true;
+document.querySelectorAll("[data-page]").forEach(b=>{
+ b.addEventListener("click",()=>page(b.dataset.page));
+});
 
- const head=new THREE.Mesh(botHeadGeo,new THREE.MeshStandardMaterial({
-  color:0xb38d72,roughness:.8
- }));
- head.position.y=1.68;
- head.castShadow=true;
+/* MODE SELECTION */
+let selectedMode="GUN GAME";
 
- root.add(body,head);
+document.querySelectorAll(".mode").forEach(m=>{
+ m.addEventListener("click",()=>{
+  document.querySelectorAll(".mode").forEach(x=>x.classList.remove("selected"));
+  m.classList.add("selected");
+  selectedMode=m.dataset.mode;
+  $("#selectedMode").textContent=selectedMode;
+ });
+});
 
- const p=spawnPoint();
- root.position.copy(p);
+/* LOCAL PROFILE */
 
- root.userData={
-  name:`AI-${String(i+1).padStart(2,"0")}`,
-  health:100,
-  alive:true,
+let profile;
+
+try{
+ profile=JSON.parse(localStorage.getItem("bullstrike-profile"));
+}catch{}
+
+if(!profile){
+ profile={
+  name:"Bull-"+Math.floor(100+Math.random()*900),
+  id:"BS-"+crypto.randomUUID().slice(0,8).toUpperCase(),
+  matches:0,
+  wins:0,
   kills:0,
-  target:null,
-  think:Math.random(),
-  shoot:Math.random(),
-  wander:Math.random()*Math.PI*2,
-  reaction:.35+Math.random()*.55,
-  accuracy:.45+Math.random()*.35,
-  strafe:Math.random()>.5?1:-1,
-  head
+  shots:0,
+  hits:0
  };
-
- scene.add(root);
- bots.push(root);
- return root;
+ save();
 }
 
-function createBots(){
- bots.forEach(b=>scene.remove(b));
- bots.length=0;
-
- const count=Number($("#botCount").value);
-
- for(let i=0;i<count;i++)
-  makeBot(i);
+function save(){
+ localStorage.setItem("bullstrike-profile",JSON.stringify(profile));
 }
 
-/* -------------------- RAY / SHOOTING -------------------- */
+function renderProfile(){
+ $("#callSign").textContent=profile.name;
+ $("#profileName").textContent=profile.name;
+ $("#bigName").textContent=profile.name;
 
-const raycaster=new THREE.Raycaster();
+ $("#playerID").textContent="ID: "+profile.id;
+ $("#settingsID").textContent=profile.id;
 
-function tracer(from,to,color=0xffdd8d){
- const geometry=new THREE.BufferGeometry().setFromPoints([from,to]);
- const line=new THREE.Line(
-  geometry,
-  new THREE.LineBasicMaterial({
-   color,
-   transparent:true,
-   opacity:.8
-  })
+ $("#matches").textContent=profile.matches;
+ $("#wins").textContent=profile.wins;
+ $("#kills").textContent=profile.kills;
+
+ $("#rate").textContent=
+  profile.matches
+   ?Math.round(profile.wins/profile.matches*100)+"%"
+   :"0%";
+
+ $("#accuracy").textContent=
+  profile.shots
+   ?Math.round(profile.hits/profile.shots*100)+"%"
+   :"0%";
+}
+
+renderProfile();
+
+/*
+ The ID above identifies only this local browser profile.
+ It is NOT an online account ID.
+*/
+
+$("#reset").onclick=()=>{
+ if(confirm("Reset your local Bullstrike Ops profile?")){
+  localStorage.removeItem("bullstrike-profile");
+  location.reload();
+ }
+};
+
+/*
+ DEPLOY PLACEHOLDER
+
+ Connect this function to the FPS engine.
+ Keeping the menu and game as separate internal systems makes
+ it much easier to upgrade the shooter without rebuilding the UI.
+*/
+
+$("#deploy").onclick=()=>{
+ profile.matches++;
+ save();
+ renderProfile();
+
+ alert(
+  "DEPLOYING: "+selectedMode+
+  "\n\nThe tactical UI is installed. The next engine section connects this screen to the playable FPS match."
  );
+ page("home");
+};
 
- scene.add(line);
+/* Persist settings */
+["graphics","frame","sensitivity","fov","bots"].forEach(id=>{
+ const el=$("#"+id);
 
- setTimeout(()=>{
-  scene.remove(line);
-  geometry.dispose();
-  line.material.dispose();
- },45);
-}
+ const saved=localStorage.getItem("bs-setting-"+id);
+ if(saved!==null)el.value=saved;
 
-function hitMarker(){
- const e=$("#hitmarker");
- e.style.opacity=1;
- setTimeout(()=>e.style.opacity=0,80);
-}
-
-function shoot(){
- if(!player.alive||reloading||paused)return;
-
- const now=performance.now()/1000;
- const w=weapons[weaponIndex];
-
- if(now-lastShot<w.rate)return;
-
- if(ammo<=0){
-  reload();
-  return;
- }
-
- lastShot=now;
- ammo--;
-
- let spread=ads?w.spread*.38:w.spread;
-
- const direction=new THREE.Vector3(
-  (Math.random()-.5)*spread,
-  (Math.random()-.5)*spread,
-  -1
- );
-
- direction.unproject(camera)
-   .sub(camera.position)
-   .normalize();
-
- raycaster.set(camera.position,direction);
- raycaster.far=w.range;
-
- const targets=[];
-
- bots.forEach(b=>{
-  if(b.userData.alive)
-   targets.push(...b.children);
+ el.addEventListener("change",()=>{
+  localStorage.setItem("bs-setting-"+id,el.value);
  });
-
- targets.push(...obstacles);
-
- const hits=raycaster.intersectObjects(targets,false);
- const end=camera.position.clone().addScaledVector(direction,w.range);
-
- if(hits.length){
-  const hit=hits[0];
-  end.copy(hit.point);
-
-  const bot=bots.find(b=>b.children.includes(hit.object));
-
-  if(bot){
-   const isHead=hit.object===bot.userData.head;
-   const dmg=w.damage*(isHead?w.head:1);
-
-   bot.userData.health-=dmg;
-   hitMarker();
-
-   if(bot.userData.health<=0)
-    eliminateBot(bot,"YOU");
-  }
- }
-
- tracer(camera.position.clone(),end);
-
- player.pitch+=w.recoil*(ads?.55:1);
- updateWeapon();
-}
-
-function reload(){
- if(reloading)return;
-
- const w=weapons[weaponIndex];
-
- if(ammo>=w.mag||reserve<=0)return;
-
- reloading=true;
- updateWeapon();
-
- setTimeout(()=>{
-  if(!reloading)return;
-
-  const need=w.mag-ammo;
-  const amount=Math.min(need,reserve);
-
-  ammo+=amount;
-  reserve-=amount;
-
-  reloading=false;
-  updateWeapon();
- },w.reload*1000);
-}
-
-/* -------------------- DAMAGE -------------------- */
-
-function damagePlayer(amount,attacker){
- if(!player.alive)return;
-
- const armorAbsorb=Math.min(player.armor,amount*.55);
-
- player.armor-=armorAbsorb;
- player.health-=amount-armorAbsorb;
-
- $("#damage").style.opacity=.8;
-
- setTimeout(()=>{
-  $("#damage").style.opacity=0;
- },90);
-
- if(player.health<=0)
-  killPlayer(attacker);
-}
-
-function killPlayer(attacker){
- player.alive=false;
- player.deaths++;
-
- feed(`${attacker} eliminated YOU`);
-
- if(gameMode==="br"||gameMode==="reload"){
-  center("ELIMINATED");
-  setTimeout(endMatch,1800);
-  return;
- }
-
- setTimeout(respawnPlayer,1400);
-}
-
-function respawnPlayer(){
- const p=spawnPoint();
-
- player.pos.copy(p);
- player.pos.y=1.7;
- player.health=100;
- player.armor=50;
- player.alive=true;
-
- equip(gameMode==="gun"?Math.min(
-  weapons.length-1,
-  Math.floor(player.kills/2)
- ):weaponIndex);
-}
-
-function eliminateBot(bot,killer){
- if(!bot.userData.alive)return;
-
- bot.userData.alive=false;
- bot.visible=false;
-
- if(killer==="YOU"){
-  player.kills++;
-  feed(`YOU eliminated ${bot.userData.name}`);
-
-  if(gameMode==="gun"){
-   weaponIndex=Math.min(
-    weapons.length-1,
-    Math.floor(player.kills/2)
-   );
-   equip(weaponIndex);
-  }
-
-  if(gameMode==="ffa"&&player.kills>=20){
-   center("VICTORY");
-   setTimeout(endMatch,2000);
-   return;
-  }
- }
-
- if(gameMode!=="br"&&gameMode!=="reload"){
-  setTimeout(()=>{
-   bot.position.copy(spawnPoint());
-   bot.userData.health=100;
-   bot.userData.alive=true;
-   bot.visible=true;
-  },1600+Math.random()*1700);
- }
-}
-
-/* -------------------- AI -------------------- */
-
-function nearestTarget(bot){
- let targetPlayer=null;
- let distance=Infinity;
-
- if(player.alive){
-  const d=bot.position.distanceTo(player.pos);
-
-  if(d<distance){
-   distance=d;
-   targetPlayer="player";
-  }
- }
-
- bots.forEach(other=>{
-  if(other===bot||!other.userData.alive)return;
-
-  const d=bot.position.distanceTo(other.position);
-
-  if(d<distance){
-   distance=d;
-   targetPlayer=other;
-  }
- });
-
- return {target:targetPlayer,distance};
-}
-
-function updateBots(dt,time){
- for(const bot of bots){
-  if(!bot.userData.alive)continue;
-
-  const data=bot.userData;
-
-  data.think-=dt;
-
-  if(data.think<=0){
-   const found=nearestTarget(bot);
-   data.target=found.target;
-   data.think=.3+Math.random()*.4;
-
-   if(Math.random()<.18)
-    data.strafe*=-1;
-  }
-
-  let targetPos=null;
-
-  if(data.target==="player"&&player.alive)
-   targetPos=player.pos;
-  else if(data.target?.userData?.alive)
-   targetPos=data.target.position;
-
-  if(!targetPos){
-   data.wander+=dt*.5;
-
-   bot.position.x+=Math.sin(data.wander)*dt;
-   bot.position.z+=Math.cos(data.wander)*dt;
-   continue;
-  }
-
-  const dx=targetPos.x-bot.position.x;
-  const dz=targetPos.z-bot.position.z;
-  const dist=Math.max(.01,Math.hypot(dx,dz));
-
-  bot.rotation.y=Math.atan2(dx,dz);
-
-  const nx=dx/dist;
-  const nz=dz/dist;
-
-  /* approach, strafe, retreat */
-  let forward=dist>10?1:dist<5?-.65:.05;
-
-  bot.position.x+=(nx*forward+nz*data.strafe*.45)*2.15*dt;
-  bot.position.z+=(nz*forward-nx*data.strafe*.45)*2.15*dt;
-
-  bot.position.x=THREE.MathUtils.clamp(bot.position.x,-55,55);
-  bot.position.z=THREE.MathUtils.clamp(bot.position.z,-55,55);
-
-  data.shoot-=dt;
-
-  if(dist<42&&data.shoot<=0){
-   data.shoot=.22+Math.random()*.38;
-
-   const origin=bot.position.clone();
-   origin.y+=1.35;
-
-   const destination=targetPos.clone();
-   destination.y+=data.target==="player"?1.1:.9;
-
-   /* AI aim error */
-   const error=(1-data.accuracy)*dist*.035;
-   destination.x+=(Math.random()-.5)*error;
-   destination.y+=(Math.random()-.5)*error;
-   destination.z+=(Math.random()-.5)*error;
-
-   tracer(origin,destination,0xff8e66);
-
-   if(Math.random()<data.accuracy*Math.max(.2,1-dist/70)){
-    if(data.target==="player"){
-     damagePlayer(7+Math.random()*8,data.name);
-    }else if(data.target?.userData){
-     data.target.userData.health-=10+Math.random()*8;
-
-     if(data.target.userData.health<=0){
-      feed(`${data.name} eliminated ${data.target.userData.name}`);
-      eliminateBot(data.target,data.name);
-     }
-    }
-   }
-  }
- }
-}
-
-/* -------------------- BR ZONE -------------------- */
-
-let zoneRadius=55;
-let zoneMesh;
-
-function createZone(){
- if(zoneMesh)scene.remove(zoneMesh);
-
- const geo=new THREE.RingGeometry(.985,1,96);
- const mat=new THREE.MeshBasicMaterial({
-  color:0x38bfe8,
-  transparent:true,
-  opacity:.24,
-  side:THREE.DoubleSide
- });
-
- zoneMesh=new THREE.Mesh(geo,mat);
- zoneMesh.rotation.x=-Math.PI/2;
- zoneMesh.position.y=.04;
- scene.add(zoneMesh);
-}
-
-function updateZone(dt){
- if(gameMode!=="br"){
-  $("#zone").textContent="";
-  if(zoneMesh)zoneMesh.visible=false;
-  return;
- }
-
- zoneMesh.visible=true;
- zoneRadius=Math.max(8,zoneRadius-dt*.16);
- zoneMesh.scale.set(zoneRadius,zoneRadius,zoneRadius);
-
- $("#zone").textContent=`ZONE ${Math.round(zoneRadius)}m`;
-
- if(Math.hypot(player.pos.x,player.pos.z)>zoneRadius)
-  damagePlayer(7*dt,"THE ZONE");
-
- bots.forEach(b=>{
-  if(
-   b.userData.alive &&
-   Math.hypot(b.position.x,b.position.z)>zoneRadius
-  ){
-   b.userData.health-=7*dt;
-
-   if(b.userData.health<=0){
-    feed(`ZONE eliminated ${b.userData.name}`);
-    eliminateBot(b,"ZONE");
-   }
-  }
- });
-
- const remaining=
-  bots.filter(b=>b.userData.alive).length+
-  (player.alive?1:0);
-
- if(remaining===1&&player.alive){
-  center("BATTLE ROYALE VICTORY");
-  setTimeout(endMatch,2200);
- }
-}
-
-/* -------------------- CONTROLS -------------------- */
-
-let joyX=0,joyY=0;
-let joyID=null;
-
-const joyZone=$("#joyZone");
-const joy=$("#joy");
-
-function joyMove(x,y){
- const r=joyZone.getBoundingClientRect();
- const cx=r.left+r.width/2;
- const cy=r.top+r.height/2;
-
- let dx=x-cx;
- let dy=y-cy;
-
- const limit=47;
- const len=Math.hypot(dx,dy);
-
- if(len>limit){
-  dx=dx/len*limit;
-  dy=dy/len*limit;
- }
-
- joyX=dx/limit;
- joyY=dy/limit;
-
- joy.style.transform=
-  `translate(calc(-50% + ${dx}px),calc(-50% + ${dy}px))`;
-}
-
-joyZone.onpointerdown=e=>{
- joyID=e.pointerId;
- joyZone.setPointerCapture(e.pointerId);
- joyMove(e.clientX,e.clientY);
-};
-
-joyZone.onpointermove=e=>{
- if(e.pointerId===joyID)
-  joyMove(e.clientX,e.clientY);
-};
-
-joyZone.onpointerup=
-joyZone.onpointercancel=e=>{
- if(e.pointerId!==joyID)return;
-
- joyID=null;
- joyX=joyY=0;
- joy.style.transform="translate(-50%,-50%)";
-};
-
-let lookID=null;
-let lastX=0,lastY=0;
-
-$("#look").onpointerdown=e=>{
- lookID=e.pointerId;
- lastX=e.clientX;
- lastY=e.clientY;
- $("#look").setPointerCapture(e.pointerId);
-};
-
-$("#look").onpointermove=e=>{
- if(e.pointerId!==lookID)return;
-
- const sensitivity=Number($("#sens").value)*.00075;
-
- player.yaw-=(e.clientX-lastX)*sensitivity*(ads?.55:1);
- player.pitch-=(e.clientY-lastY)*sensitivity*(ads?.55:1);
-
- player.pitch=THREE.MathUtils.clamp(
-  player.pitch,-1.35,1.35
- );
-
- lastX=e.clientX;
- lastY=e.clientY;
-};
-
-$("#look").onpointerup=
-$("#look").onpointercancel=e=>{
- if(e.pointerId===lookID)
-  lookID=null;
-};
-
-const keys={};
-
-addEventListener("keydown",e=>{
- keys[e.code]=true;
-
- if(e.code==="KeyR")reload();
- if(e.code==="KeyQ")equip(weaponIndex+1);
 });
 
-addEventListener("keyup",e=>keys[e.code]=false);
-
-/* continuous fire */
-
-let fireHeld=false;
-
-$("#fire").onpointerdown=e=>{
- e.preventDefault();
- fireHeld=true;
- shoot();
-};
-
-$("#fire").onpointerup=
-$("#fire").onpointercancel=()=>{
- fireHeld=false;
-};
-
-$("#reload").onpointerdown=reload;
-$("#swap").onpointerdown=()=>equip(weaponIndex+1);
-
-$("#ads").onpointerdown=()=>ads=true;
-$("#ads").onpointerup=
-$("#ads").onpointercancel=()=>ads=false;
-
-/* -------------------- MATCH -------------------- */
-
-let gameMode="ffa";
-let playing=false;
-let paused=true;
-
-document.querySelectorAll(".mode").forEach(button=>{
- button.onclick=()=>{
-  document.querySelectorAll(".mode").forEach(b=>
-   b.classList.remove("selected")
-  );
-
-  button.classList.add("selected");
-  gameMode=button.dataset.mode;
- };
-});
-
-function startMatch(){
- player.kills=0;
- player.deaths=0;
- player.health=100;
- player.armor=50;
- player.alive=true;
-
- zoneRadius=55;
-
- createBots();
- createZone();
-
- if(gameMode==="gun")
-  equip(0);
- else
-  equip(0);
-
- $("#menu").classList.add("hidden");
- $("#hud").classList.remove("hidden");
-
- playing=true;
- paused=false;
-
- respawnPlayer();
- center(
-  gameMode==="ffa"?"FREE FOR ALL":
-  gameMode==="gun"?"GUN GAME":
-  gameMode==="br"?"BATTLE ROYALE":
-  "RELOAD"
- );
-}
-
-function endMatch(){
- playing=false;
- paused=true;
-
- $("#hud").classList.add("hidden");
- $("#menu").classList.remove("hidden");
-}
-
-$("#deploy").onclick=startMatch;
-
-$("#pauseBtn").onclick=()=>{
- paused=true;
- $("#pause").classList.remove("hidden");
-};
-
-$("#resume").onclick=()=>{
- paused=false;
- $("#pause").classList.add("hidden");
-};
-
-$("#quit").onclick=()=>{
- $("#pause").classList.add("hidden");
- endMatch();
-};
-
-$("#menuSettings").onclick=()=>{
- $("#settings").classList.remove("hidden");
-};
-
-$("#pauseSettings").onclick=()=>{
- $("#pause").classList.add("hidden");
- $("#settings").classList.remove("hidden");
-};
-
-$("#closeSettings").onclick=()=>{
- $("#settings").classList.add("hidden");
-
- camera.fov=Number($("#fov").value);
- camera.updateProjectionMatrix();
-
- applyQuality();
-
- if(playing)
-  paused=false;
-};
-
-function applyQuality(){
- const q=$("#quality").value;
-
- if(q==="performance"){
-  renderer.setPixelRatio(1);
-  renderer.shadowMap.enabled=false;
-  scene.fog.far=90;
- }
- else if(q==="high"){
-  renderer.setPixelRatio(Math.min(devicePixelRatio,1.3));
-  renderer.shadowMap.enabled=true;
-  scene.fog.far=125;
- }
- else{
-  renderer.setPixelRatio(Math.min(devicePixelRatio,1.6));
-  renderer.shadowMap.enabled=true;
-  scene.fog.far=145;
- }
-
- renderer.setSize(innerWidth,innerHeight,false);
-}
-
-/* -------------------- UI -------------------- */
-
-let feedItems=[];
-
-function feed(text){
- feedItems.unshift({
-  text,
-  expires:performance.now()+3500
- });
-
- feedItems=feedItems.slice(0,5);
-}
-
-function center(text){
- const e=$("#centerMessage");
-
- e.textContent=text;
- e.style.opacity=1;
-
- setTimeout(()=>{
-  e.style.opacity=0;
- },1300);
-}
-
-function updateUI(){
- $("#hp").style.width=
-  Math.max(0,player.health)+"%";
-
- $("#armor").style.width=
-  Math.max(0,player.armor)+"%";
-
- $("#score").textContent=
-  gameMode==="br"
-   ? `${bots.filter(b=>b.userData.alive).length+(player.alive?1:0)} REMAIN`
-   : `${player.kills} KILLS · ${player.deaths} DEATHS`;
-
- const now=performance.now();
-
- feedItems=feedItems.filter(f=>f.expires>now);
-
- $("#killfeed").innerHTML=
-  feedItems.map(f=>
-   `<div class="feed">${f.text}</div>`
-  ).join("");
-
- updateWeapon();
-}
-
-/* -------------------- MOVEMENT -------------------- */
-
-function updatePlayer(dt){
- if(!player.alive)return;
-
- let x=joyX;
- let y=joyY;
-
- if(keys.KeyA)x-=1;
- if(keys.KeyD)x+=1;
- if(keys.KeyW)y-=1;
- if(keys.KeyS)y+=1;
-
- const length=Math.hypot(x,y);
-
- if(length>1){
-  x/=length;
-  y/=length;
- }
-
- const forwardX=-Math.sin(player.yaw);
- const forwardZ=-Math.cos(player.yaw);
-
- const rightX=Math.cos(player.yaw);
- const rightZ=-Math.sin(player.yaw);
-
- const speed=ads?3.1:5.5;
-
- player.pos.x+=
-  (forwardX*-y+rightX*x)*speed*dt;
-
- player.pos.z+=
-  (forwardZ*-y+rightZ*x)*speed*dt;
-
- player.pos.x=THREE.MathUtils.clamp(
-  player.pos.x,-56,56
- );
-
- player.pos.z=THREE.MathUtils.clamp(
-  player.pos.z,-56,56
- );
-
- camera.position.copy(player.pos);
-
- camera.rotation.order="YXZ";
- camera.rotation.y=player.yaw;
- camera.rotation.x=player.pitch;
-
- const targetFov=ads?55:Number($("#fov").value);
-
- camera.fov=THREE.MathUtils.lerp(
-  camera.fov,
-  targetFov,
-  Math.min(1,dt*12)
- );
-
- camera.updateProjectionMatrix();
-
- gun.position.x=THREE.MathUtils.lerp(
-  gun.position.x,
-  ads?-.18:0,
-  Math.min(1,dt*11)
- );
-
- gun.position.y=
-  Math.sin(performance.now()*.009)*
-  ((Math.abs(x)+Math.abs(y))>.1?.007:0);
-
- if(fireHeld)shoot();
-}
-
-/* -------------------- LOOP -------------------- */
-
-const clock=new THREE.Clock();
-
-let frames=0;
-let fpsTimer=0;
-
-function animate(){
- requestAnimationFrame(animate);
-
- const dt=Math.min(clock.getDelta(),.04);
-
- if(playing&&!paused){
-  updatePlayer(dt);
-  updateBots(dt,performance.now()/1000);
-  updateZone(dt);
-  updateUI();
- }
-
- frames++;
- fpsTimer+=dt;
-
- if(fpsTimer>.5){
-  $("#fps").textContent=
-   Math.round(frames/fpsTimer)+" FPS";
-
-  frames=0;
-  fpsTimer=0;
- }
-
- renderer.render(scene,camera);
-}
-
-animate();
-
-addEventListener("resize",()=>{
- camera.aspect=innerWidth/innerHeight;
- camera.updateProjectionMatrix();
- renderer.setSize(innerWidth,innerHeight,false);
-});
-
-applyQuality();
-updateWeapon();
 </script>
 </body>
 </html>
